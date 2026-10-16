@@ -37,21 +37,24 @@ export class UserController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return await firstValueFrom(
-      this.userClient.send({ cmd: 'findOneUser' }, {}),
+      this.userClient.send({ cmd: 'findOneUser' }, { id }),
     );
   }
 
-  @Patch('update')
-  async update(@Body() dto: UpdateUserDto) {
+  @Patch(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateUserDto,
+  ) {
     return await firstValueFrom(
-      this.userClient.send({ cmd: 'updateUser' }, dto),
+      this.userClient.send({ cmd: 'updateUser' }, { id, dto }),
     );
   }
 
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     return await firstValueFrom(
-      this.userClient.send({ cmd: 'deleteUser' }, {}),
+      this.userClient.send({ cmd: 'deleteUser' }, { id }),
     );
   }
 }

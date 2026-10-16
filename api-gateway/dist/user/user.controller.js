@@ -30,13 +30,13 @@ let UserController = class UserController {
         return await (0, rxjs_1.firstValueFrom)(this.userClient.send({ cmd: 'findAllUsers' }, {}));
     }
     async findOne(id) {
-        return await (0, rxjs_1.firstValueFrom)(this.userClient.send({ cmd: 'findOneUser' }, {}));
+        return await (0, rxjs_1.firstValueFrom)(this.userClient.send({ cmd: 'findOneUser' }, { id }));
     }
-    async update(dto) {
-        return await (0, rxjs_1.firstValueFrom)(this.userClient.send({ cmd: 'updateUser' }, dto));
+    async update(id, dto) {
+        return await (0, rxjs_1.firstValueFrom)(this.userClient.send({ cmd: 'updateUser' }, { id, dto }));
     }
     async delete(id) {
-        return await (0, rxjs_1.firstValueFrom)(this.userClient.send({ cmd: 'deleteUser' }, {}));
+        return await (0, rxjs_1.firstValueFrom)(this.userClient.send({ cmd: 'deleteUser' }, { id }));
     }
 };
 exports.UserController = UserController;
@@ -61,10 +61,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)('update'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_user_dto_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [Number, update_user_dto_1.UpdateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
 __decorate([

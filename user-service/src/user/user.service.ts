@@ -34,7 +34,14 @@ export class UserService {
   }
 
   async findAll() {
-    const users = await this.db.user.findMany();
+    const users = await this.db.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
     if (!users) {
       throw new RpcException({
         statusCode: 404,
@@ -46,7 +53,13 @@ export class UserService {
 
   async findOne(id: number) {
     const user = await this.db.user.findUnique({
-      where: { id: id },
+      where: { id },
+      select: {
+        id: true,
+        username: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
     if (!user) {
       throw new RpcException({
@@ -57,9 +70,16 @@ export class UserService {
     return user;
   }
 
-  async update(dto: UpdateUserDto) {
-    const { id } = dto;
-    const user = await this.db.user.findUnique({ where: { id } });
+  async update(id: number, dto: UpdateUserDto) {
+    const user = await this.db.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        username: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
     if (!user) {
       throw new RpcException({
         statusCode: 404,
